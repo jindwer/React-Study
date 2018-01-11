@@ -21,6 +21,7 @@ ReactDOM.render(
 )
 ```
 ![声明组件](./imgs/声明式组件.png)
+
 React就是用来构建UI界面的，不涉及到数据的管理，所以不属于MVC框架，只是其中view这一环节。对于数据的管理与控制会结合不同的库来实现，如Flux，Redux，Mbox等架构。
 
 #### Visual DOM 虚拟DOM
