@@ -26,6 +26,7 @@ React就是用来构建UI界面的，不涉及到数据的管理，所以不属�
 #### Visual DOM 虚拟DOM
 传统的web应用一般是直接操作DOM元素，例如jQuery等库，直接对DOM树中的节点进行增删改查操作，这样的操作过程是昂贵的，React为了虚弱这一过程，在数据到真实DOM操作的中间又增加了一层虚拟DOM来做一个缓冲，数据改变，先依据新数据生成虚拟的DOM树(render)，将新Visual DOM与上一次的Visual DOM进行对比(diff)，最终得到哪些元素需要怎样的改变(patch)，之后再将这一部分的改变在真实DOM上操作，从而更新UI界面。
 ![虚拟DOM更新界面](./imgs/VisualDOM.png)
+
 js中的对象可以分为四种:
 
 1. 超轻量对象 Object.create(null)
