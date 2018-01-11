@@ -1,0 +1,62 @@
+## 第四节 state
+React通过props传递数据，通过state设置响应式数据源。组件自身是竞争修改props属性的值，只能对于其中的数据，而对于state，组件自身则可以完全控制，可读可写。
+### state
+state表述状态，即控制组件自身展示的状态，组件接受用户行为改变状态的值，状态值的改变则又反过来控制组件的展示状态。state是存储最基础的数据，方便组件的使用展示。
+```js
+class App extends Component{
+    constructor(){
+        super()
+        this.state = {
+            count: 1
+        }
+    }
+    render(){
+        return (
+            <h1> { this.state.count } </h1>
+        )
+    }
+}
+```
+以上实例展示了state的基础使用状况，在组件内部声明`state`或者`props`都需要先调用`Component`类中的构造方法生成this实例，即调用`super()`，之后声明this上的相关属性。这里声明了一个`state.count = 1`，在render中通过`this.state.count`调用，而且当`this.state.count`改变时，组件会自动的刷新，但前提得通过指定方式来设置state的新值:`this.setState({count: newNumber})`
+```js
+class App extends Component{
+    constructor(){
+        super()
+        this.state = {
+            count: 1
+        }
+    }
+    render(){
+        return (
+            <h1 onClick={ () => this.setState({count: ++this.state.count}) }></h1>
+        )
+    }
+}
+```
+这里通过给`<h1>`标签添加了一个点击事件，当用户点击数字时会触发`this.setState()`更新数据，当数据更新后会主动调用组件的`render()`构建新的Visula DOM，之后diff出不同最后更新到真实DOM中。这里必须通过`setState`的方式才会在数据更新后自动触发后续的构建工作，如果通过赋值的方式`this.state.count = ++this.state.count`只能使得`this.state.count`的值变化，但不会触发组件自动重新构建。
+### this.setState
+`this.setState`用于更新state中的数据，从而触发组件更新。它可以接受两个参数：
+
+1. 需要更新的状态 `this.setState({count:1})`，这里只需要传递需要改变的数值，不需要把state再全部传递一遍，或者传递固定模式的函数作为第一个参数
+```js
+/* 先声明state */
+constructor(){
+    super()
+    this.state = {
+        name: 'Able.Kenndy',
+        age: 16
+    }
+}
+/* 改变state，这里只改变age属性 */
+this.setState({age: 18})
+/* 固定模式的函数 */
+this.setState((prevState, props) => { age: prevState.age + props.addNum })
+```
+> 这里`setState`会将原来的state共享新属性对象来覆盖对应的属性值得到一个新的对象，而后调用`render`;对于第二种使用固定模式函数作为第一个参数的方式，函数接受两个参数`prevState`上一个状态的`state`以及`props`属性对象，这个函数在setState的过程中是同步执行的，只有等待此函数执行完毕才能开始设置新的`state`
+
+2. 第二个参数不经常用，是一个回调函数，在页面更新完毕后调用，时间点类似于componentDidMount
+```js
+this.setState({age: 18}, () => {
+    console.log('Layout.....')
+})
+```
